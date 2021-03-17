@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.tweetapp.bean.JwtReponseBean;
 import com.tweetapp.bean.JwtRequestBean;
-import com.tweetapp.bean.UserInfoBean;
+import com.tweetapp.bean.user.UserInfoBean;
 import com.tweetapp.exception.TweetAppException;
 import com.tweetapp.service.impl.JwtUserServiceImpl;
 import com.tweetapp.utils.JwtTokenUtils;

@@ -12,7 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.tweetapp.bean.JwtRequestBean;
-import com.tweetapp.bean.UserInfoBean;
+import com.tweetapp.bean.user.UserInfoBean;
 import com.tweetapp.dao.UserDao;
 import com.tweetapp.exception.UserAlreadyExistsException;
 

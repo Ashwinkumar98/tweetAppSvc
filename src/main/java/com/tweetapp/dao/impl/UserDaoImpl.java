@@ -10,7 +10,7 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
 import com.tweetapp.bean.JwtRequestBean;
-import com.tweetapp.bean.UserInfoBean;
+import com.tweetapp.bean.user.UserInfoBean;
 import com.tweetapp.dao.UserDao;
 
 @Repository
@@ -21,20 +21,29 @@ public class UserDaoImpl implements UserDao {
 
 	@Override
 	public Optional<UserInfoBean> findByLoginId(String loginId) {
-		return Optional
-				.of(mongoTemplate.findOne(Query.query(Criteria.where("loginId").is(loginId)), UserInfoBean.class));
+		UserInfoBean user = mongoTemplate.findOne(Query.query(Criteria.where("loginId").is(loginId)),
+				UserInfoBean.class);
+		if (user != null)
+			return Optional.of(user);
+		return Optional.empty();
 	}
 
 	@Override
 	public Optional<UserInfoBean> findByEmailId(String emailId) {
-		return Optional
-				.of(mongoTemplate.findOne(Query.query(Criteria.where("emailId").is(emailId)), UserInfoBean.class));
+		UserInfoBean user = mongoTemplate.findOne(Query.query(Criteria.where("emailId").is(emailId)),
+				UserInfoBean.class);
+		if (user != null)
+			return Optional.of(user);
+		return Optional.empty();
 	}
 
 	@Override
 	public Optional<UserInfoBean> findByContactNumber(String contactNumber) {
-		return Optional.of(mongoTemplate.findOne(Query.query(Criteria.where("contactNumber").is(contactNumber)),
-				UserInfoBean.class));
+		UserInfoBean user = mongoTemplate.findOne(Query.query(Criteria.where("contactNumber").is(contactNumber)),
+				UserInfoBean.class);
+		if (user != null)
+			return Optional.of(user);
+		return Optional.empty();
 	}
 
 	@Override

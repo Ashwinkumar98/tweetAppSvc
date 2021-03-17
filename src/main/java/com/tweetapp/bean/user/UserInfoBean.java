@@ -1,4 +1,4 @@
-package com.tweetapp.bean;
+package com.tweetapp.bean.user;
 
 import java.io.Serializable;
 

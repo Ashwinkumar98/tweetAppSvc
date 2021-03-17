@@ -3,7 +3,7 @@ package com.tweetapp.dao;
 import java.util.Optional;
 
 import com.tweetapp.bean.JwtRequestBean;
-import com.tweetapp.bean.UserInfoBean;
+import com.tweetapp.bean.user.UserInfoBean;
 
 public interface UserDao {
 
