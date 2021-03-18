@@ -6,6 +6,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.tweetapp.bean.tweet.LikeTweet;
+import com.tweetapp.bean.tweet.ReplyTweet;
 import com.tweetapp.bean.tweet.Tweet;
 import com.tweetapp.dao.TweetDao;
 import com.tweetapp.exception.TweetAppException;
@@ -29,7 +31,26 @@ public class TweetServiceImpl implements TweetService {
 	}
 
 	@Override
-	public List<Tweet> getAllTweetsByUserId() {
-		return tweetRepository.getTweetsByUser();
+	public List<Tweet> getAllTweets() {
+		return tweetRepository.getAllTweets();
 	}
+
+	@Override
+	public ReplyTweet postReply(ReplyTweet tweetReply) {
+		return tweetRepository.saveReply(tweetReply);
+	}
+
+	@Override
+	public List<ReplyTweet> getAllReplyByTweets(String tweetId) {
+		return tweetRepository.getAllReply(tweetId);
+	}
+
+	@Override
+	public LikeTweet likeTweet(String tweetId) {
+		LikeTweet like = new LikeTweet();
+		like.setTweetId(tweetId);
+		like.setLikeBy(UserUtil.getUserName());
+		return tweetRepository.saveLike(like);
+	}
+
 }
