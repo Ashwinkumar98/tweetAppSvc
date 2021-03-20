@@ -3,12 +3,14 @@ package com.tweetapp.service.impl;
 import java.util.List;
 import java.util.Optional;
 
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.tweetapp.bean.tweet.LikeTweet;
 import com.tweetapp.bean.tweet.ReplyTweet;
 import com.tweetapp.bean.tweet.Tweet;
+import com.tweetapp.bean.tweet.TweetDto;
 import com.tweetapp.dao.TweetDao;
 import com.tweetapp.exception.TweetAppException;
 import com.tweetapp.service.TweetService;
@@ -31,12 +33,13 @@ public class TweetServiceImpl implements TweetService {
 	}
 
 	@Override
-	public List<Tweet> getAllTweets() {
+	public List<TweetDto> getAllTweets() {
 		return tweetRepository.getAllTweets();
 	}
 
 	@Override
-	public ReplyTweet postReply(ReplyTweet tweetReply) {
+	public ReplyTweet postReply(ReplyTweet tweetReply, String tweetId) {
+		tweetReply.setTweetId(new ObjectId(tweetId));
 		return tweetRepository.saveReply(tweetReply);
 	}
 
@@ -48,7 +51,7 @@ public class TweetServiceImpl implements TweetService {
 	@Override
 	public LikeTweet likeTweet(String tweetId) {
 		LikeTweet like = new LikeTweet();
-		like.setTweetId(tweetId);
+		like.setTweetId(new ObjectId(tweetId));
 		like.setLikeBy(UserUtil.getUserName());
 		return tweetRepository.saveLike(like);
 	}

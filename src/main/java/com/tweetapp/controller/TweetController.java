@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.tweetapp.bean.tweet.LikeTweet;
 import com.tweetapp.bean.tweet.ReplyTweet;
 import com.tweetapp.bean.tweet.Tweet;
+import com.tweetapp.bean.tweet.TweetDto;
 import com.tweetapp.exception.TweetAppException;
 import com.tweetapp.service.TweetService;
 
@@ -29,22 +30,23 @@ public class TweetController {
 	}
 
 	@GetMapping("/all")
-	public ResponseEntity<List<Tweet>> getAllTweets() throws TweetAppException {
+	public ResponseEntity<List<TweetDto>> getAllTweets() throws TweetAppException {
 		return new ResponseEntity<>(tweetService.getAllTweets(), HttpStatus.OK);
 	}
 
-	@PostMapping("/reply")
-	public ResponseEntity<ReplyTweet> addReply(@RequestBody ReplyTweet tweetReply) {
-		return new ResponseEntity<>(tweetService.postReply(tweetReply), HttpStatus.OK);
+	@PostMapping("/reply/{tweetId}")
+	public ResponseEntity<ReplyTweet> addReply(@PathVariable(name = "tweetId") String tweetId,
+			@RequestBody ReplyTweet tweetReply) {
+		return new ResponseEntity<>(tweetService.postReply(tweetReply, tweetId), HttpStatus.OK);
 	}
 
 	@GetMapping("/all/reply/{tweetId}")
 	public ResponseEntity<List<ReplyTweet>> getAllReply(@PathVariable(name = "tweetId") String tweetId) {
 		return new ResponseEntity<>(tweetService.getAllReplyByTweets(tweetId), HttpStatus.OK);
 	}
-	
+
 	@PostMapping("/like/{tweetId}")
-	public ResponseEntity<LikeTweet> likeTweet(@PathVariable(name = "tweetId") String tweetId){
+	public ResponseEntity<LikeTweet> likeTweet(@PathVariable(name = "tweetId") String tweetId) {
 		return new ResponseEntity<LikeTweet>(tweetService.likeTweet(tweetId), HttpStatus.OK);
 	}
 }

@@ -5,6 +5,8 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.LookupOperation;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Repository;
 import com.tweetapp.bean.tweet.LikeTweet;
 import com.tweetapp.bean.tweet.ReplyTweet;
 import com.tweetapp.bean.tweet.Tweet;
+import com.tweetapp.bean.tweet.TweetDto;
 import com.tweetapp.dao.TweetDao;
 import com.tweetapp.utils.UserUtil;
 
@@ -27,8 +30,21 @@ public class TweetDaoImpl implements TweetDao {
 	}
 
 	@Override
-	public List<Tweet> getAllTweets() {
-		return mongoTemplate.findAll(Tweet.class);
+	public List<TweetDto> getAllTweets() {
+
+		LookupOperation replyLookUp = LookupOperation.newLookup().from("reply").localField("_id")
+				.foreignField("tweetId").as("replies");
+
+		LookupOperation likeLookUp = LookupOperation.newLookup().from("like").localField("_id").foreignField("tweetId")
+				.as("likes");
+
+		Aggregation ag = Aggregation.newAggregation(replyLookUp, likeLookUp,
+				Aggregation.project("message", "timeStamp", "userId").and("replies").size().as("replies").and("likes")
+						.size().as("likes"));
+
+		List<TweetDto> tweets = mongoTemplate.aggregate(ag, "tweet", TweetDto.class).getMappedResults();
+
+		return tweets;
 	}
 
 	@Override
